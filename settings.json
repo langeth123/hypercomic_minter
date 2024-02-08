@@ -1,0 +1,5 @@
+{
+    "threads_run_timeout": [1, 2],
+    "mint_nft_delay": [5, 10],
+    "web3_provider": "https://zksync-era.blockpi.network/v1/rpc/public"
+}
