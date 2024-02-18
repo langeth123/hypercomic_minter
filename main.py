@@ -24,7 +24,11 @@ NFTS = {
     "2": "0xD092E42453D6864ea98597461C50190e372d2448",
     "3": "0x3C2F9D813584dB751B5EA7829B280b8cD160DE7B",
     "4": "0x8F7b0e3407E55834F35e8c6656DaCcBF9f816964",
-    "5": "0x5798C80608ede921E7028a740596b98aE0d8095A"
+    "5": "0x5798C80608ede921E7028a740596b98aE0d8095A",
+    "6": "0x9d405d767b5d2c3F6E2ffBFE07589c468d3fc04E",
+    "7": "0x02E1eb4547A6869da1e416cfd5916C213655aA24",
+    "8": "0x9f5417Dc26622A4804Aa4852dfBf75Db6f8c6F9F",
+    "9": "0x761cCCE4a16A670Db9527b1A17eCa4216507946f"
 }
 
 
@@ -138,7 +142,7 @@ def mint_nft(eth_account: LocalAccount, signature: str, number: int) -> bool:
         "chainId" : 324, 
         "nonce"   : w3.eth.get_transaction_count(eth_account.address),  
         "from"    : eth_account.address, 
-        "value"   : 0,
+        "value"   : Web3.to_wei(0.00012, 'ether'),
         "gasPrice": int(gas_price),
         "to"      : NFTS[str(number)],
         "data"    : "0x7ba0e2e7" + encode(["bytes"], [bytes.fromhex(signature[2:])]).hex()
@@ -154,7 +158,7 @@ def mint_nft(eth_account: LocalAccount, signature: str, number: int) -> bool:
 
 def check_and_mint_all(secret_key: str, proxies: list) -> None:
     eth_account = Account.from_key(secret_key)
-    nft_numbers = [i for i in range(6)]
+    nft_numbers = [i for i in range(6, 10)]
     random.shuffle(nft_numbers)
 
     account_nonce = w3.eth.get_transaction_count(eth_account.address)
@@ -165,6 +169,7 @@ def check_and_mint_all(secret_key: str, proxies: list) -> None:
             mint_nft(eth_account, signature, number)
             time.sleep(random.uniform(settings["mint_nft_delay"][0], settings["mint_nft_delay"][1]))
         except:
+            #print(traceback.format_exc())
             logger.error(f'[{eth_account.address}] cant mint nft with number: {number}')
 
 def main():
